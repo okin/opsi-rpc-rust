@@ -1,0 +1,7 @@
+[package]
+name = "opsi-rpc"
+version = "0.1.0"
+authors = ["Niko Wenselowski <der@nik0.de>"]
+
+[dependencies]
+reqwest = "0.9.9"
