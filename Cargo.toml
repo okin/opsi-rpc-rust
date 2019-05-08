@@ -5,3 +5,4 @@ authors = ["Niko Wenselowski <der@nik0.de>"]
 
 [dependencies]
 reqwest = "0.9.9"
+clap = "2.33"
