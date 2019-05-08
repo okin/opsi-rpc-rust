@@ -5,11 +5,11 @@ use clap::{Arg, App};
 
 use std::collections::HashMap;
 
-fn post(address: &str, username: &str, password: &str) -> Result<(), Box<std::error::Error>> {
+fn post(address: &str, username: &str, password: &str, method: &str) -> Result<(), Box<std::error::Error>> {
  	let mut jrpc = HashMap::new();
  	jrpc.insert("id", "1");
- 	jrpc.insert("method", "backend_info");
- 	jrpc.insert("params", "");
+	jrpc.insert("method", method);
+	jrpc.insert("params", "");
 
 	let client = reqwest::Client::builder()
 		.danger_accept_invalid_certs(true)
@@ -41,15 +41,19 @@ fn main() {
                                .help("Sets the password")
                                .required(true)
                                .index(3))
+                          .arg(Arg::with_name("method")
+                                .help("Method to call")
+                                .index(4))
                           .get_matches();
 
 
 	let addr = matches.value_of("addr").unwrap();
 	let username = matches.value_of("username").unwrap();
 	let password = matches.value_of("password").unwrap();
+	let method = matches.value_of("method").unwrap_or("backend_info");
 
 	println!("Connecting to {} as {}", addr, username);
 
-	let _result = post(&addr, &username, &password);
+	let _result = post(&addr, &username, &password, &method);
 	println!("{:#?}", _result)
 }
