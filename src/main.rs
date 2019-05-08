@@ -52,7 +52,7 @@ fn main() {
 	let password = matches.value_of("password").unwrap();
 	let method = matches.value_of("method").unwrap_or("backend_info");
 
-	println!("Connecting to {} as {}", addr, username);
+	println!("Connecting to {} as {} to execute {}", addr, username, method);
 
 	let _result = post(&addr, &username, &password, &method);
 	println!("{:#?}", _result)
