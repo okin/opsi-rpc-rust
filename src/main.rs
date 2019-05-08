@@ -59,4 +59,5 @@ fn main() {
 	println!("Connecting to {} as {}", addr, username);
 
 	let _result = post(&addr, &username, &password);
+	println!("{:#?}", _result)
 }
