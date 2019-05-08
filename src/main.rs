@@ -1,31 +1,9 @@
 extern crate reqwest;
+extern crate clap;
+
+use clap::{Arg, App};
 
 use std::collections::HashMap;
-use std::env;
-
-fn help() {
-	println!("opsi-rpc <address> <username> <password>");
-}
-
-
-fn parse_cli() -> [String; 3] {
-	let args: Vec<String> = env::args().collect();
-
-    match args.len() {
-	    4 => {
-	        let address = &args[1];
-	        let username = &args[2];
-	        let password = &args[3];
-
-	        [address.to_string(), username.to_string(), password.to_string()]
-	    },
-	    _ => {
-	        // show a help message
-	        help();
-	        panic!("invalid arguments");
-    	}
-    }
-}
 
 fn post(address: &str, username: &str, password: &str) -> Result<(), Box<std::error::Error>> {
  	let mut jrpc = HashMap::new();
@@ -47,11 +25,25 @@ fn post(address: &str, username: &str, password: &str) -> Result<(), Box<std::er
 }
 
 fn main() {
-	let args: [String; 3] = parse_cli();
+	let matches = App::new("opsi-rpc-rust")
+                          .arg(Arg::with_name("addr")
+                               .help("Sets an address")
+                               .required(true)
+                               .index(1))
+                          .arg(Arg::with_name("username")
+                               .help("Sets the username")
+                               .required(true)
+                               .index(2))
+                          .arg(Arg::with_name("password")
+                               .help("Sets the password")
+                               .required(true)
+                               .index(3))
+                          .get_matches();
 
-	let addr = &args[0];
-	let username = &args[1];
-	let password = &args[2];
+
+	let addr = matches.value_of("addr").unwrap();
+	let username = matches.value_of("username").unwrap();
+	let password = matches.value_of("password").unwrap();
 
 	println!("Connecting to {} as {}", addr, username);
 
