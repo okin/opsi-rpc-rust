@@ -33,7 +33,10 @@ fn post(address: &str, username: &str, password: &str) -> Result<(), Box<std::er
  	jrpc.insert("method", "backend_info");
  	jrpc.insert("params", "");
 
- 	let client = reqwest::Client::new();
+	let client = reqwest::Client::builder()
+		.danger_accept_invalid_certs(true)
+		.build()?;
+
 	let mut response = client.post(address)
  		.basic_auth(username, Some(password))
  		.json(&jrpc)
